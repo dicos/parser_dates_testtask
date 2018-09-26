@@ -21,17 +21,17 @@ MONTH_NAMES = (
 )
 
 
-def remove_year(date_str_input):
-    return date_str_input.replace('..', '.').replace('г.', '').replace('г', '').strip()
+def remove_year(str_date_input):
+    return str_date_input.replace('..', '.').replace('г.', '').replace('г', '').strip()
 
 
-def replace_ru_month(date_str_input):
+def replace_ru_month(str_date_input):
     """ Заменяем русское название месяца на его номер """
-    date_str = date_str_input.lower()
+    str_date = str_date_input.lower()
     for index, tokens in enumerate(MONTH_NAMES):
         for token in tokens:
-            if token in date_str:
-                return remove_year(date_str.replace(token, str(index + 1)))
+            if token in str_date:
+                return remove_year(str_date.replace(token, str(index + 1)))
     raise ValueError
 
 
@@ -74,7 +74,7 @@ if __name__ == '__main__':
                         except ValueError:
                             continue
                         else:
-                            file_result.write(converter(str_date).strftime('01.%m.%Y') + '\n')
+                            file_result.write(date_obj.strftime('01.%m.%Y') + '\n')
                             parsered = True
                             break
                 if not parsered:
