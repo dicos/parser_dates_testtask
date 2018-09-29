@@ -40,6 +40,9 @@ def date_period(str_date):
     return datetime.now() + relativedelta(years=years[0])
 
 
+def replace_to_dot(str_date):
+    return str_date.replace('/', '.').replace(',', '.')
+
 
 DATE_FORMATS = (
     (re.compile(r'^[0-3]?\d/\d{4} ?(г(\.)?)?$', re.I | re.U), lambda x: datetime.strptime(remove_year(x), '%m/%Y')),
@@ -47,8 +50,8 @@ DATE_FORMATS = (
     (re.compile(r'^[^0-9]*\d{2}( г.)?$'), lambda x: datetime.strptime(replace_ru_month(x), '%m.%y')),
     (re.compile(r'^[^0-9]*\d{4}( г.)?$'), lambda x: datetime.strptime(replace_ru_month(x), '%m %Y')),
     (re.compile(r'^[0-3]?\d\.\d{4}.[0-3]?\d\.\d{4}$'), lambda x: datetime.strptime(x[:7], '%m.%Y')),
-    (re.compile(r'^\d{2}\.\d{2}\.\d{2}$'), lambda x: datetime.strptime(x, '%d.%m.%y')),
-    (re.compile(r'^\d{2},\d{2}\.\d{4}$'), lambda x: datetime.strptime(x, '%d,%m.%Y')),
+    (re.compile(r'^\d{2}[\./\,]\d{2}\.\d{2}$'), lambda x: datetime.strptime(replace_to_dot(x[3:]), '%m.%y')),
+    (re.compile(r'^\d{2}[\./\,]\d{2}\.\d{4}$'), lambda x: datetime.strptime(replace_to_dot(x[3:]), '%m.%Y')),
     (re.compile(r'^\d+/\d{4} ?(г(\.)?)?$'), lambda x: datetime.strptime(remove_year(x), '%d/%Y')),
     (re.compile(r'^\d{3}/\d{4} ?(г(\.)?)?$'), lambda x: datetime.strptime(remove_year(x).split('/')[1], '%Y')),
     (re.compile(r'^\d{2}\.\d{2}\.\d{2}$'), lambda x: datetime.strptime(x[3:], '%m.%y')),
